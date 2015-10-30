@@ -1,8 +1,11 @@
 from checkpoint1 import Space
 import os
 
-office =Space('Office',3,1)
-living =Space('living',3,4)
+
+
+
+office =Space('OFFICE', 3, 1)
+living =Space('LIVING', 3, 4)
 
 
 
@@ -27,7 +30,7 @@ def living_allocate(path):
 			i +=1
 		print ("People allocated = {}".format(z))
 		print ("\n")
-		unallocated(d[i:],living.type_of_room)
+		unallocated(d[i:], living.type_of_room)
 	#else:
 		#print('FILE NOT FOUND %s' %path)
 
@@ -48,7 +51,7 @@ def office_allocate(path):
 	print ("People allocated = {}".format(i))
 	print ("\n"*3)
 
-	unallocated(d[i:],office.type_of_room)
+	unallocated(d[i:], office.type_of_room)
 	
 
 def unallocated(list,room_type):
@@ -101,9 +104,12 @@ if task == 2:
 		print("0: Allocate Office")
 		print("1: Allocate Living Space")
 		print("2: Allocate both living and office")
+
 		try:
 			room_type = int(raw_input("Insert room to allocate: "))
-			if room_type in[0,1,2]: break
+			if room_type in[0,1,2]: 
+				break
+
 		except :
 			print("ERROR: insert 0, 1, or 2")
 
@@ -113,11 +119,14 @@ if task == 2:
 		print("4: load names from a file")
 		try:
 			source  = int(raw_input("Input Method: "))
-			if source in [3 ,4] : break
+			if source in [3 ,4] : 
+				break
+				
 		except :
 			print("ERROR: insert 3 0r 4")
 
 
+# ------------------------manual Input of names 
 
 	if source == 3 :	
 		while True:	
@@ -134,11 +143,12 @@ if task == 2:
 					print (living.allocate_room(inp))
 				# print allocated room
 				
-
+# -------------------------Loading Files from a file 
 
 	if source == 4:
 		try:
 			file_path= raw_input(r"Insert full path of File :")
+
 			if room_type == 0 : print (office_allocate(file_path))
 			if room_type == 1 : print (living_allocate(file_path))
 			if room_type == 2 : 
@@ -149,7 +159,7 @@ if task == 2:
 
 
 
-# ----------------------view room occupants
+# ----------------------View Room Cccupants
 if task == 3 :
 	while True :
 		print ("Select Rooms ?\n")
@@ -158,7 +168,8 @@ if task == 3 :
 		
 		try:
 			report = int(raw_input("Insert room type: "))
-			room_num =raw_input("Insert room name: ")
+
+			room_num =raw_input("Insert room name: ").upper()
 
 			if report in[1,2,3]: 
 				print( "\n"*2)
@@ -180,12 +191,11 @@ if task == 4:
 		print ("Select Rooms ?\n")
 		print ("1. Living \n")
 		print ("2. Office\n")
+		print ("3.Both ")
 		
 		try:
 			report = int(raw_input("Insert room type: "))
-			
-
-			if report in[1,2]: 
+			if report in [1,2,3]: 
 				print( "\n"*2)
 				if report == 1 : 
 					# print_status returns a list [empty_spaces, Summary of room status ] 
@@ -198,15 +208,24 @@ if task == 4:
 					d=office.print_status()
 					print ("Empty Spaces = {} ".format(d[0]))
 					print (d[1])
+
+				if report == 3:
 					
-			break
+					d=living.print_status()
+					print ("Empty Living Spaces = {} ".format(d[0]))
+					print (d[1])
+
+					d=office.print_status()
+					print ("Empty Office Spaces = {} ".format(d[0]))
+					print (d[1])
+				
+
+				break
 		except :
-			print("ERROR: insert 1 or 2")
+			print ("ERROR: insert 1 or 2")
 
 	
 
 		
-	#except :
-		#print (" Error : File was not found / wrong path")
-		
+	
 
