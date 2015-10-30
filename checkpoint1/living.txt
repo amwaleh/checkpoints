@@ -1,1 +1,1 @@
-{'living 2': ['Alex mwaleh', 'IYANU ALIMI'], 'living 1': ['ANDREW PHILLIPS', 'IYANU ALIMI', 'ANDREW PHILLIPS', 'Alex mwaleh'], 'living 0': ['Alex mwaleh', 'ANDREW PHILLIPS', 'IYANU ALIMI']}
+{'living 2': [], 'living 1': [], 'living 0': []}

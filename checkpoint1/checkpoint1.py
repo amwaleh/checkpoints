@@ -77,6 +77,19 @@ class Space(object):
 				report += person +", "
 			report += "\n \n"
 		return report
+#Return status of the room by availing a list of occupants and free spaces 
+	def print_status(self):
+		empty_spaces = 0
+		status=''
+		for room in sorted(self.room_list.iterkeys()) :
+			
+			status += " {} |occupants= {} | Max-Pax = {} | free space = {}\n".format(room, len(self.room_list[room]),self.max_people, (self.max_people - len(self.room_list[room])))
+			empty_spaces += self.max_people - len(self.room_list[room])
+
+			# return a list of empty spaces and a string of the summary
+		
+		return [empty_spaces,status]
+
 
 	def get_from_file(self,path):
 		file_list =[]
@@ -93,3 +106,8 @@ class Space(object):
 			# ignore staff and student with y 
 		file.close
 		return file_list
+	def get_room_occupants(self, room_name):
+		return self.room_list[room_name]
+
+
+		#print the room supplied 
