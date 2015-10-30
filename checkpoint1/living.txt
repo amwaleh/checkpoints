@@ -1,1 +1,0 @@
-{'living 2': [], 'living 1': [], 'living 0': []}
