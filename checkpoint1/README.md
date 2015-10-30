@@ -35,15 +35,17 @@ This will create Object with 2 rooms prefixed with the Room_Param e.h Mountain 1
 
 
 #Room Allocation
-	1.Room Allocation can be done manually by calling the room_allocate() function
+1.Room Allocation can be done manually by calling the room_allocate() function
+	 
 	 class.room_allocate('John Smith')
 
 	This will randomly chose a vacant room and allocate the name 
+
+2. Rooms can also be allocated from a file by evoking the get_from_file() function
 	
-	2. Rooms can also be allocated from a file by evoking the get_from_file() function
 	 class.get_from_file(r"allocation.txt")
 
-	This method returns alist of all the file
+This method returns alist of all the file
 check the allocation.txt for formatting
 # Development
 
