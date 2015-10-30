@@ -56,7 +56,7 @@ class Space(object):
 				# save details to file				
 				# return room allocated
 				self.save_list()
-				return [key, room[key][0]]
+				return [key, name_person]
 		 # return list with -1 and  message if all rooms have been allocated
 		return [-1, "{}  Rooms Fully Occupied".format(self.type_of_room)]
 

@@ -1,8 +1,8 @@
 from checkpoint1 import Space
 import os
 
-office =Space('Office',10,6)
-living =Space('living',10,5)
+office =Space('Office',3,1)
+living =Space('living',3,4)
 
 
 
@@ -10,42 +10,45 @@ living =Space('living',10,5)
 
 def living_allocate(path):
 
-	if (os.path.isfile(path)):
+	#if (os.path.isfile(path)):
 
 		d =living.get_from_file(path)
 		
-		i=0
+		i = z = 0 
 		print ("====================== List of allocation Living =========================\n")
 		for x in d:
 			
 			if 'Y' in x and 'FELLOW' in x:
 				
 				s = living.allocate_room((x[0] + " "+ x[1]))
-				print (s[1])
+				print (s[:2])
 				if s[0] == -1 : break
-				d.remove(x)
+				z +=1
 			i +=1
-		print ("People allocated = {}".format(i))
-		print ("\n"*3)
-		unallocated(d,living.type_of_room)
-	else:
-		print('FILE NOT FOUND %s' %path)
+		print ("People allocated = {}".format(z))
+		print ("\n")
+		unallocated(d[i:],living.type_of_room)
+	#else:
+		#print('FILE NOT FOUND %s' %path)
 
 def office_allocate(path):
 
-	d=office.get_from_file(path)
+	d = office.get_from_file(path)
 	print ("====================== List of allocation  Office=========================\n")
-	i=0
+	i = 0
+	
 	for x in d:
 		
-		s = living.allocate_room((x[0] + " "+ x[1]))
-		print (s[1])
+		s = office.allocate_room((x[0] + " "+ x[1]))
+		print (s[:2])
 		if s[0] == -1 : break
-		d.remove(x)
-	i +=1
+		
+		i +=1
+
 	print ("People allocated = {}".format(i))
 	print ("\n"*3)
-	unallocated(d,office.type_of_room)
+
+	unallocated(d[i:],office.type_of_room)
 	
 
 def unallocated(list,room_type):
@@ -66,30 +69,25 @@ def unallocated(list,room_type):
 #print living.print_allocation()
 
 while True :
-	print("\n\n 1: insert \n")
+	print("\n\n SECTION A: CHOOSE ROOM\n")
 	print("0: Allocate Office")
 	print("1: Allocate Living Space")
 	print("2: Allocate both living and office")
 	try:
-		room_type = int(raw_input("allocate: "))
+		room_type = int(raw_input("Insert room to allocate: "))
 		if room_type in[0,1,2]: break
 	except :
 		print("ERROR: insert 0, 1, or 2")
 
 while True:	
-	print("\n 2:Choose \n")
+	print("\n SECTION B:CHOOSE INPUT METHOD \n")
 	print("3: to insert Name directly")
 	print("4: load names from a file")
 	try:
-		source  = int(raw_input("allocate: "))
+		source  = int(raw_input("Input Method: "))
 		if source in [3 ,4] : break
 	except :
 		print("ERROR: insert 3 0r 4")
-
-office =Space('Office',10,6)
-living =Space('living',10,5)
-
-
 
 
 
