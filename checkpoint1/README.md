@@ -1,12 +1,13 @@
 # checkpoints 1
 # Dojo Room Allocat
 
+
 This module is used to Randomly allocate space to a defined set of rooms
  that can hold a defined number of people.
 
 # Usage
 
-## SPace Class
+## Space Class
 	Space class module in the checkpoint1.py is used to model the rooms
 	
 	Space (Number of People, Room_Name, Number_of_Rooms)
