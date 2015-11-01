@@ -1,3 +1,10 @@
+'''
+	This class module models room and allocates
+	people randomly, to the rooms created.
+
+'''
+
+
 import random 		# for randomizing lists
 import os  			# for finding files and path
 import ast  		# for convertion of strings to dictionary
@@ -92,9 +99,9 @@ class Space(object):
 
 
 	def print_allocation(self):
-		report=''
+		report = ''
 		for room in sorted(self.room_list.iterkeys()) :
-			report +=room + "\n"
+			report += room + "\n"
 			for person in self.room_list[room]:
 				report += person +", "
 
@@ -104,7 +111,7 @@ class Space(object):
 	# Return status of the room by availing a list of occupants and free spaces 
 	def print_status(self):
 		empty_spaces = 0
-		status=''
+		status = ''
 		for room in sorted(self.room_list.iterkeys()) :
 			# For better output Trancate the names to 6 characters
 			status += " {:.6} ->>\t occupants= {} \t| Max-Pax = {} \t| free space = {}\n".format(room, len(self.room_list[room]),
@@ -117,7 +124,7 @@ class Space(object):
 
 
 	def get_from_file(self,path):
-		file_list =[]
+		file_list = []
 		file = open(path, 'r')
 
 		for line in file :
