@@ -8,8 +8,3 @@ Lion
 Fresher
 Band
 Mongo
-Java
-Bower
-Crane
-Greece
-Tolinda

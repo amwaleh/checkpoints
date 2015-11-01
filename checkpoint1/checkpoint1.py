@@ -106,8 +106,8 @@ class Space(object):
 		empty_spaces = 0
 		status=''
 		for room in sorted(self.room_list.iterkeys()) :
-			
-			status += " {} |occupants= {} | Max-Pax = {} | free space = {}\n".format(room, len(self.room_list[room]),
+			# For better output Trancate the names to 6 characters
+			status += " {:.6} ->>\t occupants= {} \t| Max-Pax = {} \t| free space = {}\n".format(room, len(self.room_list[room]),
 																					self.max_people, 
 																					(self.max_people - len(self.room_list[room])))
 			empty_spaces += self.max_people - len(self.room_list[room])
