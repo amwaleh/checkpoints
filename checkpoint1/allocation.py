@@ -57,11 +57,12 @@ def unallocated(list,room_type):
 
 
 while True :
-	print (" Choose a Task \n")
+	print (" CHOOSE A TASK \n")
 	print ("1. Print room Allocations \n")
 	print ("2. Allocate room\n") 
 	print ("3. View room Occupants\n")
 	print ("4. View room Status\n")
+	print (" ")
 	try:
 		task = int(raw_input("Insert room to allocate: "))
 		if task in[1,2,3,4]: 

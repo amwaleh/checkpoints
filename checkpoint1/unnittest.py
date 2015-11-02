@@ -55,7 +55,8 @@ class TestMyFunctions(unittest.TestCase):
 		#check if the number list items equals number of lines ina file 
 		with open('data/sample.txt' ) as f:
 			total = sum(1 for _ in f)
-		self.assertTrue(type(d),type([]))
+		self.assertTrue(type(d),type([]))of 
+		#check that the lit has equal number lines and 
 		self.assertTrue(len(d), total)
 
 
