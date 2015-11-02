@@ -10,21 +10,29 @@ def living_allocate(path):
 
 	if (os.path.isfile(path)):
 
-		d =living.get_from_file(path)
-		i = z = 0 
+		destination = living.get_from_file(path)
+		#intitialize counter to check index reached
+		i = 0 
+		#intialize counter to check how many rooms have been allocated
+		z = 0 
+
 		print ("====================== List of allocation Living =========================\n")
 
-		for x in d:
+		for x in destination:
 			if 'Y' in x and 'FELLOW' in x:
-				s = living.allocate_room((x[0] + " "+ x[1]))
-				print (s[:2])
-				if s[0] == -1 : break
+				space = living.allocate_room((x[0] + " "+ x[1]))
+				print (space[:2])
+				# if the rooms are full break the loop
+				if space[0] == -1 : 
+					break
+				#add to allocated counter
 				z +=1
 			i +=1
 
 		print ("People allocated = {}".format(z))
 		print ("\n")
-		unallocated(d[i:], living.type_of_room)
+		# Pass the unallocated list for printing
+		unallocated(destination[i:], living.type_of_room)
 
 	else:
 		print('FILE NOT FOUND %s' %path)
@@ -62,24 +70,34 @@ while True :
 	print ("2. Allocate room\n") 
 	print ("3. View room Occupants\n")
 	print ("4. View room Status\n")
+<<<<<<< HEAD
 	print (" ")
+=======
+	print ("0. to exit\n")
+>>>>>>> master
 	try:
 		task = int(raw_input("Insert room to allocate: "))
-		if task in[1,2,3,4]: 
+		if task in [1,2,3,4,0]: 
 			break
 	except :
 		print("ERROR: insert 1,2,3 or 4")
 
 # --------------------Print room allocations
+if task == 'exit':
+	exit
+
 if task == 1 :
 	while True :
 		print ("Which Rooms ?\n")
 		print ("1. Living \n")
 		print ("2. Office\n")
 		print ("3. Both\n")
+		print ("0. Exit\n")
 		try :
 			report = int(raw_input("Insert Space to print: "))
-			if report in[1,2,3]: 
+			if report in[1,2,3,0]: 
+				if report == 0 :
+					exit
 				if report == 1 : 
 					print(living.print_allocation())
 				if report == 2 : 
@@ -104,19 +122,25 @@ if task == 2 :
 		print("0: Allocate Office")
 		print("1: Allocate Living Space")
 		print("2: Allocate both living and office")
+		print("3: Exit\n")
 
 		try :
 			room_type = int(raw_input("Insert room to allocate: "))
-			if room_type in[0,1,2]: 
+			if room_type in[0,1,2,3]: 
 				break
 
 		except :
 			print("ERROR: insert 0, 1, or 2")
+	
 
 	while True :
+		if room_type == 3:
+			exit()
+
 		print("\n SECTION B:CHOOSE INPUT METHOD \n")
 		print("3: to insert Name directly")
 		print("4: load names from a file")
+
 
 		try :
 			source  = int(raw_input("Input Method: "))
@@ -130,7 +154,7 @@ if task == 2 :
 	if source == 3 :	
 		while True:	
 			
-			inp = raw_input("Insert Name :")
+			inp = raw_input("Insert Name or exit to stop :")
 			if inp !='':
 				# exit code if input is 'exit'
 				if inp == 'exit' : 
@@ -168,14 +192,19 @@ if task == 3 :
 		print ("Select Rooms ?\n")
 		print ("1. Living \n")
 		print ("2. Office\n")
+		print ("0. exit\n")
+
 		
 		try:
 			report = int(raw_input("Insert room type: "))
+			if report == 0 :
+					break
 
-			room_num =raw_input("Insert room name: ").upper()
+			room_num =raw_input("Insert room name: ")
 
-			if report in[1,2,3]: 
+			if report in[1,2,0]: 
 				print( "\n"*2)
+				
 				if report == 1 : 
 					for x in living.get_room_occupants(room_num) :
 						print( x )
@@ -194,12 +223,20 @@ if task == 4:
 		print ("Select Rooms ?\n")
 		print ("1. Living \n")
 		print ("2. Office\n")
+<<<<<<< HEAD
 		print ("3. Both ")
+=======
+		print ("3. Both\n")
+		print ("0. exit")
+>>>>>>> master
 		
 		try:
 			report = int(raw_input("Insert room type: "))
-			if report in [1,2,3]: 
+			if report in [0,1,2,3]: 
 				print( "\n"*2)
+				if report == 0 :
+					break
+
 				if report == 1 : 
 					# print_status returns a list [empty_spaces, Summary of room status ] 
 					# empty _spaces is a int 
