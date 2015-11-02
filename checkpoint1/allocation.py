@@ -194,7 +194,7 @@ if task == 4:
 		print ("Select Rooms ?\n")
 		print ("1. Living \n")
 		print ("2. Office\n")
-		print ("3.Both ")
+		print ("3. Both ")
 		
 		try:
 			report = int(raw_input("Insert room type: "))

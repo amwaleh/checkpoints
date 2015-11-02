@@ -1,4 +1,5 @@
-# checkpoints 1
+# checkpoint 1
+
 # Dojo Room Allocat
 
 
@@ -7,18 +8,17 @@ This module is used to Randomly allocate space to a defined set of rooms
 
 # Usage
 
-## Space Class
-	Space class module in the checkpoint1.py is used to model the rooms
 	
 	Space (Number of People, Room_Name, Number_of_Rooms)
 
 ##The class takes three optional params
-	Number_of_people = maximum number a room can take.
-	Room_Name 	= The Name you want to allocate the room e.g. Office, Living etc
-	Number_of_Rooms =Number of rooms you want your building to have. 
 
-#To create Room:
-1.instatiate the class
+	Number_of_people = maximum number a room can take.
+	Room_Name 		 = The Name you want to allocate the room e.g. Office, Living etc
+	Number_of_Rooms  = Number of rooms you want your building to have. 
+
+#To create Rooms:
+1.instatiate the class with defaults.
 	
 	class = Space()
 
@@ -26,7 +26,7 @@ This module is used to Randomly allocate space to a defined set of rooms
 
 	This will create an Object with 1 space per room and will load rooms from the 'room.txt' file 
 
-or 
+or  pass the required parameters
 	
 	class = Space(3, 'mountain', 2)
 	
@@ -57,9 +57,10 @@ This will create Object with 2 rooms prefixed with the Room_Param e.g 'Mountain 
 
 
 This method returns alist of all the file
-check the allocation.txt for formatting
+
 
 # Development
+You may clone this repo:
 
 https://github.com/andela-amwaleh/checkpoints
 
