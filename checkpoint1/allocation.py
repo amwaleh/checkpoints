@@ -70,11 +70,8 @@ while True :
 	print ("2. Allocate room\n") 
 	print ("3. View room Occupants\n")
 	print ("4. View room Status\n")
-<<<<<<< HEAD
-	print (" ")
-=======
 	print ("0. to exit\n")
->>>>>>> master
+
 	try:
 		task = int(raw_input("Insert room to allocate: "))
 		if task in [1,2,3,4,0]: 
@@ -223,12 +220,10 @@ if task == 4:
 		print ("Select Rooms ?\n")
 		print ("1. Living \n")
 		print ("2. Office\n")
-<<<<<<< HEAD
-		print ("3. Both ")
-=======
+
 		print ("3. Both\n")
 		print ("0. exit")
->>>>>>> master
+
 		
 		try:
 			report = int(raw_input("Insert room type: "))
