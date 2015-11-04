@@ -17,7 +17,7 @@ that can hold a defined number of people.
 	Number_of_people = maximum number a room can take.
 	Room_Name 		 = The Name you want to allocate the room e.g. Office, Living etc
 	Number_of_Rooms  = Number of rooms you want your building to have. 
-```
+	```
 
 #To create Rooms:
 
