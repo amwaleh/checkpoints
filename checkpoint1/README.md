@@ -9,18 +9,20 @@ This module is used to Randomly allocate space to a defined set of rooms
 # Usage
 
 	
-	Space (Number of People, Room_Name, Number_of_Rooms)
+	'Space (Number of People, Room_Name, Number_of_Rooms)
 
-##The class takes three optional params
+##The roomspacs takes three optional params
 
+	'''
 	Number_of_people = maximum number a room can take.
 	Room_Name 		 = The Name you want to allocate the room e.g. Office, Living etc
 	Number_of_Rooms  = Number of rooms you want your building to have. 
+	'''
 
 #To create Rooms:
 1.instatiate the class with defaults.
 	
-	class = Space()
+	'roomspacs = Space()
 
 	
 
@@ -28,7 +30,7 @@ This module is used to Randomly allocate space to a defined set of rooms
 
 or  pass the required parameters
 	
-	class = Space(3, 'mountain', 2)
+	roomspacs = Space(3, 'mountain', 2)
 	
 
 This will create Object with 2 rooms prefixed with the Room_Param e.g 'Mountain 1' and 'mountain 2' as the room Name
@@ -38,13 +40,13 @@ This will create Object with 2 rooms prefixed with the Room_Param e.g 'Mountain 
 #Room Allocation
 1.Room Allocation can be done manually by calling the room_allocate() function
 	 
-	 class.room_allocate('John Smith')
+	 roomspacs.room_allocate('John Smith')
 
 	This will randomly chose a vacant room and allocate the name 
 
 2. Rooms can also be allocated from a file by evoking the get_from_file() function
 	
-	 class.get_from_file(r"allocation.txt")
+	 roomspacs.get_from_file(r"allocation.txt")
 #Test
  to test out how the program works Run allocation.py
  		$>> python allocation.py

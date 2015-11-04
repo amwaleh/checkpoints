@@ -45,7 +45,6 @@ def office_allocate(path):
     print("=="*10 + " List of allocation Office " + "=="*10 + "\n")
     # Introduce a counter to know how many elements have been processed
     i = 0
-
     for x in d:
         s = office.allocate_room((x[0] + " " + x[1]))
         print(s[:2])
@@ -221,7 +220,6 @@ if task == 4:
         print("Select Rooms ?\n")
         print("1. Living \n")
         print("2. Office\n")
-
         print("3. Both\n")
         print("0. exit")
 
@@ -245,7 +243,6 @@ if task == 4:
                     print(d[1])
 
                 if report == 3:
-
                     d = living.print_status()
                     print("Empty Living Spaces = {} ".format(d[0]))
                     print(d[1])
