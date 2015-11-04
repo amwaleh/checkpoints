@@ -27,7 +27,7 @@ Instatiate the class with defaults.
 
 	
 
- This will create an Object with 1 space per room and will load rooms from the 'room.txt' file 
+ This will create an Object with 1 space per room and will load rooms from the `'room.txt'` file 
 
  or  pass the required parameters
 	
@@ -39,7 +39,7 @@ This will create Object with 2 rooms prefixed with the Room_Param e.g `'Mountain
 
 
 #Room Allocation
-	1. Room Allocation can be done manually by calling the `room_allocate() function
+	1. Room Allocation can be done manually by calling the `room_allocate()' function
 	 
 	 `roomspacs.room_allocate('John Smith')`
 
