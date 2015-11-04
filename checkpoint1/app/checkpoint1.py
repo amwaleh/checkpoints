@@ -54,7 +54,7 @@ class Space(object):
 				# Generate list from Room.txt
 				self.room_list = {}
 				# Use the get_from_file to generate list
-				data = self.get_from_file('room.txt')
+				data = self.get_from_file('/data/room.txt')
 				#Generate dictionary with names from list
 				for line in data :
 					

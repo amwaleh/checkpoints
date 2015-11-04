@@ -1,4 +1,8 @@
-from checkpoint1 import Space
+import sys
+sys.path.append(".")
+
+
+from app.checkpoint1 import Space
 import unittest
 import os
 
@@ -51,11 +55,11 @@ class TestMyFunctions(unittest.TestCase):
 
 	def test_get_from_file(self):
 		office = Space(1,'prooms', 1)
-		d = office.get_from_file('data/sample.txt')
+		d = office.get_from_file(r'data/prooms.txt')
 		#check if the number list items equals number of lines ina file 
-		with open('data/sample.txt' ) as f:
+		with open('data/prooms.txt' ) as f:
 			total = sum(1 for _ in f)
-		self.assertTrue(type(d),type([]))of 
+		self.assertTrue(type(d),type([]))
 		#check that the lit has equal number lines and 
 		self.assertTrue(len(d), total)
 
