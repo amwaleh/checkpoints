@@ -59,14 +59,14 @@ Allocation.py Module
 1. To Run the program run `allocation.py`
  		`>> python allocation.py`
 2. From the menu chose a number to run a task 
-		*To print room allocation
-		 *This option enables you to view all the rooms and thier occupant
-		*To allocate room 
-		 *This gives you the option to insert Occupants from afile or manually enter thier names
-		*To print room Occupants
-		 *This allows you to insert a room name and displays the occupant	
-		*To print room status
-		 *This option Prints the number of empty rooms and the number of occupants per room
+		1. To print room allocation
+		 1. This option enables you to view all the rooms and thier occupant
+		2. To allocate room 
+		 1. This gives you the option to insert Occupants from afile or manually enter thier names
+		3. To print room Occupants
+		 1. This allows you to insert a room name and displays the occupant	
+		4. To print room status
+		 1. This option Prints the number of empty rooms and the number of occupants per room
   
  
  
