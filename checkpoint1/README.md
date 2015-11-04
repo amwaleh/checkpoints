@@ -39,7 +39,7 @@ This will create Object with 2 rooms prefixed with the Room_Param e.g `'Mountain
 
 
 #Room Allocation
-	1. Room Allocation can be done manually by calling the `room_allocate()' function
+	1. Room Allocation can be done manually by calling the `room_allocate()` function
 	 
 	 `roomspacs.room_allocate('John Smith')`
 
