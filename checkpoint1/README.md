@@ -64,7 +64,8 @@ This will create Object with 2 rooms prefixed with the Room_Param e.g `'Mountain
 Allocation.py Module
 --------------------
  This moudule create two instance from the `Space()` Class
- Office reads room allocation from file `'rooms.txt'`
+
+ NB : office reads room allocation from file `'rooms.txt'`
 
 		office = Space(6)
 
@@ -90,7 +91,7 @@ From the menu chose a number to run a task
 
 * `4 : To print room status`
  * This option Prints the number of empty rooms and the number of occupants per room
- 
+
 * `0: To exit the Program`
 
  
