@@ -63,7 +63,7 @@ This will create Object with 2 rooms prefixed with the Room_Param e.g `'Mountain
 
 Allocation.py Module
 --------------------
- This moudule create two instance from the `Space()` Class
+ This moudule creates two instance from the `Space()` Class
 
  NB : office reads room allocation from file `'rooms.txt'`
 
@@ -73,7 +73,7 @@ Allocation.py Module
 
 		living = Space(4,'Living', 10)
 
-#Running
+#Menu Options
 
 To Run the program run `allocation.py`
  		`python allocation.py`
