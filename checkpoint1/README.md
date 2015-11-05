@@ -75,8 +75,8 @@ Allocation.py Module
 
 #Menu Options
 
-To Run the program run `allocation.py`
- 		`python allocation.py`
+Once you run `allocation.py`.
+ 		
 From the menu chose a number to run a task 
 
 * `1 :To print room allocation`
