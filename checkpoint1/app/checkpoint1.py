@@ -1,13 +1,15 @@
 '''
-	This class module models room and allocates
-	people randomly, to the rooms created.
+    This class module models room and allocates
+    people randomly, to the rooms created.
 
 '''
 
-
-import random 		# for randomizing lists
-import os  			# for finding files and path
-import ast  		# for convertion of strings to dictionary
+# for randomizing lists
+import random
+# for finding files and path
+import os
+# for convertion of strings to dictionary
+import ast
 
 
 class Space(object):
@@ -22,16 +24,16 @@ class Space(object):
                       x for x in range(self.num_rooms)]
         self.path = "data/" + self.type_of_room + ".txt"
 
-        # load room file file else generate
+        # load room from file else generate from Type_of_room
         # check if file exists
         if (os.path.isfile(self.path)):
             file = open(self.path, 'r')
             self.room_list = file.read()
             file.close
             ''' the list gotten from file is in string format we need 
-				to convert it to dictionary type by using ast.literal_eval()
-				Check if the file has any data errors i.e 
-			'''
+                to convert it to dictionary type by using ast.literal_eval()
+                Check if the file has any data errors i.e 
+            '''
 
             if len(self.room_list) > 0:
 
@@ -77,7 +79,6 @@ class Space(object):
         for key in keys:
             if self.num_rooms > 0 and len(room[key]) < self.max_people:
                 room[key].append(name_person)
-
                 # Print allocated room
                 # Save details to file
                 # Return room allocated and persons name
@@ -112,10 +113,10 @@ class Space(object):
         for room in sorted(self.room_list.iterkeys()):
             # For better output Trancate the names to 6 characters
             status += """ {:.6} ->>\t occupants= {} \t| 
-            			Max-Pax = {} \t|
-            			 free space = {}\n""".format(room, len(self.room_list[room]),
-                                                            self.max_people,
-                                                            (self.max_people - len(self.room_list[room])))
+                        Max-Pax = {} \t|
+                         free space = {}\n""".format(room, len(self.room_list[room]),
+                                                     self.max_people,
+                                                     (self.max_people - len(self.room_list[room])))
             empty_spaces += self.max_people - len(self.room_list[room])
 
         # Return a list of empty spaces and a string of the summary
