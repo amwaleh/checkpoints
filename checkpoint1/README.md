@@ -55,9 +55,9 @@ This will create Object with 2 rooms prefixed with the Room_Param e.g `'Mountain
 
 	 `roomspacs.get_from_file(r"allocation.txt")`
 
-#Test
 
- To test out how the program works Run allocation.py
+
+ To Run the program  Run allocation.py
  		`>> python allocation.py`
 
 
