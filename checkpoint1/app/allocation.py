@@ -78,7 +78,7 @@ while True:
     try:
         task = int(raw_input("Insert room to allocate: "))
         if task == 0:
-            exit()
+            break
 
         if task in [1, 2, 3, 4, 0]:
             break
