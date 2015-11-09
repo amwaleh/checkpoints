@@ -9,7 +9,7 @@ that can hold a defined number of people.
 # Usage
 
 	
-	`Space (Number of People, Room_Name, Number_of_Rooms)`
+	Space (Number of People, Room_Name, Number_of_Rooms)
 
 #The roomspacs takes three optional params
 
@@ -24,7 +24,7 @@ that can hold a defined number of people.
 
 Instatiate the class with defaults.
 	
-	`roomspacs = Space()`
+	roomspacs = Space()
 
 	
 
