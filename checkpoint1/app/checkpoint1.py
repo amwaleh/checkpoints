@@ -112,11 +112,10 @@ class Space(object):
         status = ''
         for room in sorted(self.room_list.iterkeys()):
             # For better output Trancate the names to 6 characters
-            status += """ {:.6} ->>\t occupants= {} \t| 
-                        Max-Pax = {} \t|
-                         free space = {}\n""".format(room, len(self.room_list[room]),
-                                                     self.max_people,
-                                                     (self.max_people - len(self.room_list[room])))
+            status += """ {:.6} ->>\t occupants= {} \t|Max-Pax = {} \t|free space = {}\n"""\
+                        .format(room, len(self.room_list[room]), self.max_people,\
+                         (self.max_people - len(self.room_list[room])))
+                        
             empty_spaces += self.max_people - len(self.room_list[room])
 
         # Return a list of empty spaces and a string of the summary

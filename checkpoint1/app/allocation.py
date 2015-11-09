@@ -50,9 +50,7 @@ def office_allocate(path):
         print(s[:2])
         if s[0] == -1:
             break
-
         i += 1
-
     print("People allocated = {}".format(i))
     print("\n"*3)
 
@@ -115,7 +113,6 @@ while True:
                         print("=="*20)
                         print("\n")
                         print(office.print_allocation())
-
                 break
             except:
                 print("ERROR: insert 1,2 or 3")
