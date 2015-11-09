@@ -24,7 +24,7 @@ that can hold a defined number of people.
 
 Instatiate the class with defaults.
 	
-	`roomspacs = Space()`
+	roomspacs = Space()
 
 	
 
