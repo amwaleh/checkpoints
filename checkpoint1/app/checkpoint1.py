@@ -60,7 +60,6 @@ class Space(object):
                 data = self.get_from_file('/data/room.txt')
                 # Generate dictionary with names from list
                 for line in data:
-
                     self.room_list[line[0]] = []
                 self.num_rooms = len(self.room_list)
                 # Save the list :)
