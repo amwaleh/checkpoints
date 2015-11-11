@@ -92,10 +92,11 @@ def view_room_status():
 def allocate_room():
     while True:
         print 'SECTION A: CHOOSE ROOM'
-        print '0: Allocate Office'
+        
         print '1: Allocate Living Space'
         print '2: Allocate both living and office'
-        print '3: Exit\n'
+        print '3: Allocate Office'
+        print '0: Exit\n'
         try:
             room_type = int(raw_input('Choose room to allocate: '))
             if room_type in [0, 1, 2, 3]:
@@ -104,25 +105,29 @@ def allocate_room():
             print 'ERROR: Insert 0, 1, or 2'
 
     while True:
-        if room_type == 3:
+        if room_type == 0 :
             break
 
         print 'SECTION B:CHOOSE INPUT METHOD '
         print '\t3: to insert names directly\n'
         print '\t4: load names from a file\n'
         print '\t5: load names from a file'
-        source = int(raw_input('Input Method: '))
+        try:
+            source = int(raw_input('Input Method: '))
+        except :
+            print'Insert 3, 4 or 5'
+
         if source in [3, 4, 5]:
 
                 # manual Input of names
 
             if source == 3:
-                manual_input()
+                manual_input(room_type)
 
             # Loading Files from a file
 
             if source == 4:
-                load_from_file()
+                load_from_file(room_type)
 
             # Load automatically
 
@@ -133,7 +138,7 @@ def allocate_room():
 
 def load_automatically(room_type):
     file_path = 'data/allocation.txt'
-    if room_type == 0:
+    if room_type == 3:
         print office_allocate(file_path)
     if room_type == 1:
         print living_allocate(file_path)
@@ -142,12 +147,12 @@ def load_automatically(room_type):
         print living_allocate(file_path)
 
 
-def load_from_file():
+def load_from_file(room_type):
     try:
 
         file_path = raw_input(r"Insert full path of file :")
 
-        if room_type == 0:
+        if room_type == 3:
             print office_allocate(file_path)
         if room_type == 1:
             print living_allocate(file_path)
@@ -158,10 +163,10 @@ def load_from_file():
         print 'Error file did not load'
 
 
-def manual_input():
+def manual_input(room_type):
     while True:
-        inp = raw_input("Type Name or 'exit' to stop :")
-        if inp != '':
+        try :
+            inp = raw_input("Type Name or 'exit' to stop :")
 
             # exit code if input is 'exit'
 
@@ -170,7 +175,7 @@ def manual_input():
 
             # allocate room to person
 
-            if room_type == 0:
+            if room_type == 3:
                 print office.allocate_room(inp)
             if room_type == 1:
                 print living.allocate_room(inp)
@@ -178,7 +183,10 @@ def manual_input():
                 print office.allocate_room(inp)
                 print living.allocate_room(inp)
 
-            # print allocated room
+        except:
+            print ('Room does not exist ')
+   
+          # print allocated room
 
     # ---------------------- View Room Cccupants
 
@@ -190,9 +198,12 @@ def view_room_occupant():
         print '2. Office\n'
         print '0. exit\n'
 
-        # try:
+        try:
 
-        report = int(raw_input('Insert room type: '))
+            report = int(raw_input('Insert room type: '))
+        except:
+            print 'Type 1,2 or 0'
+            break
 
         if report == 0:
             break
@@ -226,14 +237,17 @@ def show_edit_options(room_num, room_type):
     edit = int(raw_input('Choose Occupant : '))
     print """ Chose action
  \
-            0: exit
- \
-            1: Change Name
+            1: change Name
  \
             2: Delete
  \
+            0: exit
+ \
         """
-    action = int(raw_input('Choose action : '))
+    try : 
+        action = int(raw_input('Choose action : '))
+    except :
+        print 'type 1,2 or 0'
     if action == 0:
         pass
 

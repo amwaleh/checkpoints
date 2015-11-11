@@ -176,7 +176,10 @@ class Space(object):
         return file_list
 
     def get_room_occupants(self, room_name):
-        return self.room_list[room_name]
+        if room_name in self.room_list:
+            if len(self.room_list[room_name]) > 0:
+                return self.room_list[room_name]
+        return [-1,'Room does not exist']
 
 
 
