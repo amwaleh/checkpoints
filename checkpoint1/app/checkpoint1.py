@@ -8,6 +8,7 @@
 import random
 # for finding files and path
 import os
+
 # for convertion of strings to dictionary
 import ast
 
@@ -18,12 +19,13 @@ class Space(object):
         # generate rooms according to type and capacity
 
         self.max_people = max_people
+        self.cur_path = os.path.dirname(__file__)
         self.num_rooms = num_rooms
         self.type_of_room = type_of_room
         self.rooms = [self.type_of_room + ' %d' %
                       x for x in range(self.num_rooms)]
-        self.path = "data/" + self.type_of_room + ".txt"
-
+        self.path =os.path.join(self.cur_path, "../data/" + self.type_of_room + ".txt") 
+        
         # load room from file else generate from Type_of_room
         # check if file exists
         if (os.path.isfile(self.path)):
@@ -57,10 +59,17 @@ class Space(object):
                 # Generate list from Room.txt
                 self.room_list = {}
                 # Use the get_from_file to generate list
-                data = self.get_from_file('/data/room.txt')
+                
+                data = self.get_from_file( os.path.join(self.cur_path, '../data/room.txt'))
+                
                 # Generate dictionary with names from list
+
                 for line in data:
-                    self.room_list[line[0]] = []
+                    if len(self.room_list[line[0]])>0 :
+
+                        print(line)
+
+                        self.room_list[line[0]] = []
                 self.num_rooms = len(self.room_list)
                 # Save the list :)
                 self.save_list()
@@ -111,10 +120,10 @@ class Space(object):
         status = ''
         for room in sorted(self.room_list.iterkeys()):
             # For better output Trancate the names to 6 characters
-            status += """ {:.6} ->>\t occupants= {} \t|Max-Pax = {} \t|free space = {}\n"""\
-                        .format(room, len(self.room_list[room]), self.max_people,\
-                         (self.max_people - len(self.room_list[room])))
-                        
+            status += """ {:.8} ->>\t occupants= {} \t|Max-Pax = {} \t|free space = {}\n"""\
+                .format(room, len(self.room_list[room]), self.max_people,
+                        (self.max_people - len(self.room_list[room])))
+
             empty_spaces += self.max_people - len(self.room_list[room])
 
         # Return a list of empty spaces and a string of the summary
