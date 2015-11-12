@@ -142,7 +142,7 @@ Choose:
 
 * `3:To print room Occupants` 
  * This allows you to insert a room name and displays the occupant	
-   * Type `1` to view occupants of a Living space
+  * Type `1` to view occupants of a Living space
    * Type `2` to view occupants of an office space
    * Type `0` to exit 
 
