@@ -135,9 +135,7 @@ class Space(object):
             for person in self.room_list[room]:
                 report += person + ', '
 
-            report += '''
- 
-'''
+            report += ''
         return report
 
     # Return status of the room by availing a list of occupants and free spaces
