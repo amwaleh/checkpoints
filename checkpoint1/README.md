@@ -36,7 +36,7 @@ b. Pass the required parameters e.g.
 
 
 This will create an object with 2 rooms prefixed with the Room_Param e.g `'Mountain 1'` and `'mountain 2'` as the room Name
------------------------------------
+
 #### Functions:
 
 * #### allocate_room(name_person)
@@ -125,16 +125,16 @@ Choose:
 
 * `1 :To print room allocation`
  * This option enables you to view all the rooms and thier occupant
-   1. Type `1`  to view a list of all Living space and thier occupant.
-   2. Type `2`  to view a list of all Living space and thier occupant.
-   3. Type `3`  to  go back to main menu.
+  * Type `1`  to view a list of all Living space and thier occupant.
+   * Type `2`  to view a list of all Living space and thier occupant.
+   * Type `3`  to  go back to main menu.
 
 * `2 :To allocate room`
  * This gives you the option to insert Occupants from afile or manually enter thier names
-   1. Type `1` to allocate Living space
-   2. Type `2` to allocate both Living and Office space
-   3. Type `3` to allocate  Office space
-   4. Type `0` to exit
+  * Type `1` to allocate Living space
+   * Type `2` to allocate both Living and Office space
+   * Type `3` to allocate  Office space
+   * Type `0` to exit
    
    The program will give a list of the rooms each individual is allocated to.
    In case the rooms are full a message will be printed notifying you that all
@@ -142,24 +142,24 @@ Choose:
 
 * `3:To print room Occupants` 
  * This allows you to insert a room name and displays the occupant	
-   1. Type `1` to view occupants of a Living space
-   2. Type `2` to view occupants of an office space
-   3. Type `0` to exit 
+   * Type `1` to view occupants of a Living space
+   * Type `2` to view occupants of an office space
+   * Type `0` to exit 
 
 * Insert name of room when prompted e.g. `Living 5`
 
 	 * Once the room is chosen and Occupants found an editing menu that allows you to `change name` or `delete` an occupant will be activated
 	 * Enter number of the person you wish to edit from the list
-	   1. Type `1`  to change name 
-	   2. Type `2`  to delete name from list
-	   3. Type `0`  to exit
+	   * Type `1`  to change name 
+	   * Type `2`  to delete name from list
+	   * Type `0`  to exit
 
 * `4 : To print room status`
  * This option Prints the number of empty rooms and the number of occupants per room
-    1. Type `1` to view status of  Living spaces
-    2. Type `2` to view status of  Office spaces
-    3. Type `3` to view status of both rooms
-    3. Type `0` to exit 
+    * Type `1` to view status of  Living spaces
+    * Type `2` to view status of  Office spaces
+    * Type `3` to view status of both rooms
+    * Type `0` to exit 
 
 * `0: To exit the Program`
 

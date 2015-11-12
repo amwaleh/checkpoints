@@ -52,7 +52,7 @@ def view_room_status():
         print '3. Both\n'
         print '0. exit'
 
-        # try:
+   
 
         report = int(raw_input('Insert room type: '))
         if report in [0, 1, 2, 3, 4]:
@@ -85,8 +85,7 @@ def view_room_status():
 
             break
 
-        # except:
-        #     print("ERROR: insert 1 or 2")
+       
 
 
 def allocate_room():
@@ -119,7 +118,7 @@ def allocate_room():
 
         if source in [3, 4, 5]:
 
-                # manual Input of names
+            # manual Input of names
 
             if source == 3:
                 manual_input(room_type)
@@ -145,6 +144,7 @@ def load_automatically(room_type):
     if room_type == 2:
         print office_allocate(file_path)
         print living_allocate(file_path)
+  
 
 
 def load_from_file(room_type):
@@ -186,11 +186,11 @@ def manual_input(room_type):
         except:
             print ('Room does not exist ')
    
-          # print allocated room
+         
 
-    # ---------------------- View Room Cccupants
+ 
 
-
+# ---------------------- View Room Cccupants
 def view_room_occupant():
     while True:
         print 'Select Rooms ?\n'
