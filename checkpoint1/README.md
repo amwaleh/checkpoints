@@ -37,9 +37,9 @@ b. Pass the required parameters e.g.
 
 This will create an object with 2 rooms prefixed with the Room_Param e.g `'Mountain 1'` and `'mountain 2'` as the room Name
 
-#### Functions:
+#### Functions
 
-* #### allocate_room(name_person)
+* ***allocate_room()***
 	* This function allocates a person to a room.
 	* It return a list 
 	 * `[room name, Name of Occupant]`
@@ -165,5 +165,7 @@ Choose:
 
  
 
+### Testing 
 
+Run `test/checkpoint1.py` to test the module
 			
