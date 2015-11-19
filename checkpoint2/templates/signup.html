@@ -11,6 +11,7 @@
 		{{ form.first_name.Label }}
 		{% if form.first_name.errors %}
 			{% for error in form.first_name.errors %}
+				<p class="error-message">{{ error }}</p>
 
 
 			{% endfor %}
@@ -19,10 +20,24 @@
 	</div>
 	<div class="form-group">
 		{{ form.last_name.Label }}
+		{% if form.last_name.errors %}
+			{% for error in form.last_name.errors %}
+				<p class="error-message">{{ error }}</p>
+
+
+			{% endfor %}
+		{% endif %}
 		{{form.last_name}}
 	</div>
 	<div class="form-group">
 		{{ form.email.Label }}
+		{% if form.email.errors %}
+			{% for error in form.email.errors %}
+				<p class="error-message">{{ error }}</p>
+
+
+			{% endfor %}
+		{% endif %}
 		{{form.email}}
 	</div>
 	{{ form.submit(class="btn" )}}
