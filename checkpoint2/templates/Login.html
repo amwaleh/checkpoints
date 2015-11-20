@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col s12 m5">
+        <div class="card-panel ">
+            <span class="teal-text"> Login </span>
+<form action="/login" method="POST">
+
+{{form.hidden_tag()}}
+<div class="form-group">
+
+		{{ form.email.label }}
+		{% if form.email.errors %}
+			{% for error in form.email.errors %}
+				<p class="error-message">{{ error }}</p>
+			{% endfor %}
+		{% endif %}
+		{{form.email}}
+	</div>
+
+
+	<div class="form-group">
+		{{ form.password.label }}
+		{% if form.password.errors %}
+			{% for error in form.password.errors %}
+				<p class="error-message">{{ error }}</p>
+			{% endfor %}
+		{% endif %}
+		{{form.password}}
+	</div>
+	{{ form.submit(class="btn waves-effect waves-light")}}
+</form>
+</div></div></div>
+
+{% endblock %}

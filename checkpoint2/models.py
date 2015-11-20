@@ -1,7 +1,7 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSON
 
-#from wezeug import
+from werkzeug import generate_password_hash, check_password_hash
 
 
 db = SQLAlchemy()
@@ -12,9 +12,16 @@ class users(db.Model):
 	firstname = db.Column(db.String(100))
 	lastname = db.Column(db.String(100))
 	email = db.Column(db.String(120), unique=True)
-	password =db.column(db.String(50))
+	pwdhash =db.column(db.String(50))
 
-	def __init__ (self, firstname, lastname,email):
+	def __init__ (self, firstname, lastname,email,password):
 		self.firstname = firstname.title()
 		self.lastname = lastname.title()
 		self.email = email.lower()
+		self.set_password(password)
+
+	def set_password(self, password):
+		self.password = generate_password_hash(password)
+
+	def check_password(self, password):
+		return check_password_hash(self.pwdhash, password)
