@@ -38,7 +38,7 @@ def signup():
 			db.session.add(newuser)
 			db.session.commit()
 			# Return message 
-			return form.password.data
+			return render_template('index.html', content={'msg':'welcome you are'})
 	# Else check if its first form request
 	elif request.method == 'GET' :
 		return render_template('signup.html', form=form)
@@ -64,8 +64,7 @@ def login():
 			#if Fail return to Login 
 			#if pass redirect to home page 
 			else:
-				return "wrong password"
-
+				return render_template('login.html', form=form)
 
 
 			
