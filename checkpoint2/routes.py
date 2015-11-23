@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 from models import db ,users
 from form import SignupForm, LoginForm
 
@@ -60,7 +60,7 @@ def login():
 			password = form.password.data
 			user = users.query.filter_by(email=email).first()
 			if user is not None and user.check_password(password):
-				return redirect(url_for("index.html"))
+				return redirect(url_for("index"))
 			#if Fail return to Login 
 			#if pass redirect to home page 
 			else:

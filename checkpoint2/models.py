@@ -12,7 +12,7 @@ class users(db.Model):
 	firstname = db.Column(db.String(100))
 	lastname = db.Column(db.String(100))
 	email = db.Column(db.String(120), unique=True)
-	pwdhash =db.column(db.String(50))
+	pwdhash =db.Column(db.String(255))
 
 	def __init__ (self, firstname, lastname,email,password):
 		self.firstname = firstname.title()
@@ -21,7 +21,7 @@ class users(db.Model):
 		self.set_password(password)
 
 	def set_password(self, password):
-		self.password = generate_password_hash(password)
+		self.pwdhash = generate_password_hash(password)
 
 	def check_password(self, password):
 		return check_password_hash(self.pwdhash, password)
