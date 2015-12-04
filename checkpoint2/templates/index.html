@@ -6,8 +6,24 @@
 	<div class="col s12 m6">
 		<div class="card blue-grey darken-1">
 			<div class="card-content white-text">
+			<form action="{{url_for('bucketlist')}}" method="POST">
 				<span class="card-title">Home</span>
-				<p>  {{ msg | default:"Welcome Home"}} </p>
+{{form.hidden_tag()}}
+				{{ form.name.label }}
+		{% if form.name.errors %}
+			{% for error in form.name.errors %}
+				<p class="error-message">{{ error }}</p>
+
+
+			{% endfor %}
+		{% endif %}
+		{{ form.name }}
+		{{ form.submit(class="btn" )}}
+			</form>	
+
+				 { {form1}}
+				 	
+			
 			</div>
 			<div class="card-action">
 				<a href="{{ url_for( 'about' )}}">This is a link</a>

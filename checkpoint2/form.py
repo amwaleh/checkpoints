@@ -13,3 +13,7 @@ class LoginForm(Form):
 	email = StringField('Email', validators=[DataRequired("Input email")])
 	password = PasswordField('password',validators=[DataRequired("Password Required")])
 	submit = SubmitField('Login')
+
+class AddBucketlist(Form):
+	name = StringField('List', validators=[DataRequired("add list")])
+	submit = SubmitField('add list')
