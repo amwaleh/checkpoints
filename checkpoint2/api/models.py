@@ -105,6 +105,7 @@ class Bucketlist(db.Model):
 		ordering = ['id','name','created_on','modified_on']
 
 	def __init__(self,name,creator=None,id=None,created_on=None,modified_on=None,item={}):
+
 		self.name = name
 		self.created_on = created_on
 		self.modified_on = modified_on
