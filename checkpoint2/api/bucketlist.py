@@ -5,6 +5,9 @@ from models import db, users, Bucketlist, Bucketitems
 from form import SignupForm, LoginForm, AddBucketlist
 from flask.ext.httpauth import HTTPBasicAuth
 from sqlalchemy import and_
+from flask.ext.paginate import Pagination
+from config import POSTS_PER_PAGE
+from flask import Blueprint
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/flask'
@@ -12,6 +15,7 @@ app.config['SECRET_KEY'] = "development-Key"
 #app.config["JSON_SORT_KEYS"] = False
 db.init_app(app)
 auth = HTTPBasicAuth()
+mod = Blueprint('users', __name__)
 
 @auth.verify_password
 def verify_password(username_or_token, password):
@@ -52,10 +56,15 @@ def bucketlist():
 		return redirect(("/bucketlists/{0}".format(newlist.id)))
 
 	if request.method == 'GET':
+
 		newList = db.session.query(Bucketlist).filter(Bucketlist.creator == uid)
-		# Serialise items and create item
-		Lists = [List.serializelist for List in newList]
 		# Check if the list is Empty
+		# Serialise items and create item
+		#newList=Bucketlist.query.all()
+		Lists = [List.serializelist for List in newList]
+		page = 1
+		count = Bucketlist.query.paginate(page, POSTS_PER_PAGE, False)
+		return jsonify(res=[i.serialize for i in count.items])
 		if len(Lists) == 0 :
 			return jsonify({'Error':'Empty'})
 		return jsonify(Bucketlist = Lists)
@@ -186,10 +195,23 @@ def update_items(id, item_id):
 		
 
 # index page route index.html
+@mod.route('/')
 @app.route("/")
 @auth.login_required
 def index():
-	return "Hello, %s" % g.user.uid
+	search = False
+	q = request.args.get('q')
+	if q:
+	    search = True
+	try:
+	    page = int(request.args.get('page', 1))
+	except ValueError:
+	    page = 5
+	count = Bucketlist.query.paginate(page, POSTS_PER_PAGE, False)
+	#users = User.find(...)
+	#pagination = Pagination(page=page, total=count, search=count, record_name='users')
+	return jsonify(Bucketlist=[i.serialize for i in count.items])
+
 
 # route to about page about.html
 @app.route("/about")
@@ -198,28 +220,25 @@ def about():
 	return render_template("about.html")
 
 # Route to Sign up page
-@app.route("/signup", methods=["POST",'GET'])
-def signup():
-	""" Get data in JSON format"""
-	data = request.get_json(force=True)
-	# Get username and password  to register user
-	username = request.json1.get('username')
-	password = request.json.get('password')
-	# Check if User and password have been passed
-	if username is None or password is None:
-		return jsonify({'Error':'Username and password required'})
-	# Check if user exist in the database 
-	if users.query.filter_by(username = username).first() is not None:
-		return jsonify({'Error':'User exists'})
-	# Save newuser 
-	user = users(username = username)
-	user.hash_password(password)
-	user.firstname = request.json.get('firstname')
-	user.lastname = request.json.get('lastname')
-	user.email = request.json.get('email')
-	db.session.add(user)
-	db.session.commit()
-	return jsonify({ 'username': user.username })
+
+@app.route('/api/users', methods = ['POST'])
+def new_user():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    if username is None or password is None:
+        abort(400) # missing arguments
+    if User.query.filter_by(username = username).first() is not None:
+        abort(400) # existing user
+    user = User(username = username)
+    user.hash_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({ 'username': user.username }), 201,\
+    				{'Location': url_for('get_user', 
+    									  id = user.id, 
+    									  _external = True
+    									)
+    				}
 	
 
 # Route to Login Page 
@@ -243,7 +262,10 @@ def login():
 	if request.method == 'GET':
 		return render_template('login.html', form=form)
 
-
+@app.route("/auth/logout")
+def logout():
+	g.user=""
+	return str(g.user)#jsonify({"Message":"You Been Logged Out"})
 
 if __name__ == "__main__" :
 	app.run(debug=True)
