@@ -4,8 +4,8 @@ from flask import json,jsonify, session, Flask, session, \
 from models import db, users, Bucketlist, Bucketitems
 from form import SignupForm, LoginForm, AddBucketlist
 from flask.ext.httpauth import HTTPBasicAuth
-from sqlalchemy import and_
-from flask.ext.paginate import Pagination
+from sqlalchemy_paginator import Paginator
+from flask.ext.sqlalchemy  import Pagination
 from config import POSTS_PER_PAGE
 from flask import Blueprint
 
@@ -56,18 +56,49 @@ def bucketlist():
 		return redirect(("/bucketlists/{0}".format(newlist.id)))
 
 	if request.method == 'GET':
+		post_per_page = POSTS_PER_PAGE
+		limit = request.args.get('limit')
+		q_name = request.args.get('q')
+		if limit:
+			if  int(limit) > 0 and int(limit) <= 100 :
+				post_per_page = int(limit)
+			# Set maximum number of pages
+			if int(limit) > 100:
+				post_per_page = 100
 
-		newList = db.session.query(Bucketlist).filter(Bucketlist.creator == uid)
-		# Check if the list is Empty
-		# Serialise items and create item
-		#newList=Bucketlist.query.all()
-		Lists = [List.serializelist for List in newList]
-		page = 1
-		count = Bucketlist.query.paginate(page, POSTS_PER_PAGE, False)
-		return jsonify(res=[i.serialize for i in count.items])
-		if len(Lists) == 0 :
-			return jsonify({'Error':'Empty'})
-		return jsonify(Bucketlist = Lists)
+		query = db.session.query(Bucketlist).filter_by(creator=uid)
+
+		if q_name:
+			query = db.session.query(Bucketlist).filter_by(creator=uid).filter_by(name=q_name)
+
+
+		pagination = Paginator(query,post_per_page)
+		page=1
+		current_page = pagination.page(page)
+		lists = current_page.object_list
+		if lists == []:
+			return jsonify({'Error':'Bucketlist Empty'})
+		all_lists = [List.serialize for List in lists]
+
+		next_page = None
+		previous_page = None
+
+		if current_page.has_next():
+			next_page = current_page.next_page_number
+		if current_page.has_previous():
+			previous_page = current_page.has_previous()
+
+
+		pages_view = {
+                    'total_count': current_page.paginator.count,
+                    'total_pages': current_page.paginator.total_pages,
+                    'current_page': current_page.number,
+                    'next_page': next_page,
+                    'previous_page': previous_page,
+                    'bucketlists': all_lists
+                 }
+		return jsonify(Bucketlist=[pages_view])
+
 
 @app.route("/bucketlists/<int:id>", methods=["GET", "PUT", "DELETE"])
 @auth.login_required
@@ -104,6 +135,7 @@ def Update_bucketlist(id):
 	if request.method == 'GET':
 		uid = "%d"%g.user.uid
 		#Check if list exists 
+		username = request.args.get('username')
 		newList = Bucketlist.query.get(id)
 		if newList is None:
 			return jsonify({'Error':'List does not Exist'})
@@ -199,18 +231,15 @@ def update_items(id, item_id):
 @app.route("/")
 @auth.login_required
 def index():
-	search = False
-	q = request.args.get('q')
-	if q:
-	    search = True
-	try:
-	    page = int(request.args.get('page', 1))
-	except ValueError:
-	    page = 5
-	count = Bucketlist.query.paginate(page, POSTS_PER_PAGE, False)
+	uid = "%d"%g.user.uid
+	query = db.session.query(Bucketlist).filter_by(creator=uid)
+	pagination = Paginator(query,POSTS_PER_PAGE)
+	page=1
+	current_page = pagination.page(page)
+	bucketlists = current_page.object_list
 	#users = User.find(...)
 	#pagination = Pagination(page=page, total=count, search=count, record_name='users')
-	return jsonify(Bucketlist=[i.serialize for i in count.items])
+	return jsonify(Bucketlist=[lists.serialize for lists in bucketlists])
 
 
 # route to about page about.html
