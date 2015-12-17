@@ -66,6 +66,8 @@ def bucketlist():
 		post_per_page = POSTS_PER_PAGE
 		limit = request.args.get('limit')
 		q_name = request.args.get('q')
+		page = request.args.get('page')
+
 		if limit:
 			if  int(limit) > 0 and int(limit) <= 100 :
 				post_per_page = int(limit)
@@ -76,9 +78,9 @@ def bucketlist():
 		query = db.session.query(Bucketlist).filter_by(creator=uid)
 		if q_name:
 			query = db.session.query(Bucketlist).filter_by(creator=uid).filter_by(name=q_name)
+		if not page or not page.isnumeric:
+			page=1	
 
-		page=1	
-		
 		pagination = Paginator(query,post_per_page)
 		current_page = pagination.page(page)
 		lists = current_page.object_list
@@ -93,6 +95,9 @@ def bucketlist():
 			next_page = current_page.next_page_number
 		if current_page.has_previous():
 			previous_page = current_page.has_previous()
+		total_pages = current_page.paginator.total_pages
+		if page > total_pages:
+			return jsonify({'Error':'requested a page thats out of range '})
 
 
 		pages_view = {
