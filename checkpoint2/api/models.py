@@ -39,7 +39,12 @@ class users(db.Model):
 	
 	def generate_auth_token(self, expiration=600):
 		s = Serializer(SECRET_KEY, expires_in=expiration)
+		data = {'username': self.username} if self.username is not None else {}
 		return s.dumps({'uid': self.uid})
+
+	def invalidate(self):
+		return_token = users.generate_auth_token(self)
+		return {'token':return_token.decode()}, 200
 
 	@staticmethod
 	def verify_auth_token(token):
@@ -52,6 +57,21 @@ class users(db.Model):
 			return None
 		user = users.query.get(data['uid'])
 		return user
+ 	
+ 	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+        
+	def get_id(self):
+		try:
+			return unicode(self.id)  # python 2
+		except NameError:
+			return str(self.id)
 
 
 

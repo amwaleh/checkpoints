@@ -5,10 +5,11 @@ from models import db, users, Bucketlist, Bucketitems
 from form import SignupForm, LoginForm, AddBucketlist
 from flask.ext.httpauth import HTTPBasicAuth
 from sqlalchemy_paginator import Paginator
-from flask.ext.sqlalchemy  import Pagination
+#from flask.ext.sqlalchemy  import Pagination
 from config import POSTS_PER_PAGE,MAX_PAGES
 from flask import Blueprint
-
+from flask.ext.login import (current_user, LoginManager, login_user,
+                             logout_user, login_required)
 
 
 app = Flask(__name__)
@@ -16,10 +17,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/flask'
 app.config['SECRET_KEY'] = "development-Key"
 #app.config["JSON_SORT_KEYS"] = False
 db.init_app(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 auth = HTTPBasicAuth()
 @auth.verify_password
 def verify_password(username_or_token, password):
-
 	if 'token' in request.headers:
 		token = request.headers['token']
 		user = users.verify_auth_token(token)
@@ -42,7 +45,7 @@ def get_auth_token():
 	token = g.user.generate_auth_token()
 	return jsonify({ 'token': token.decode('ascii') })
 
-# *Endpoint for listing all bucketlist of a user
+# Endpoint for listing all bucketlist of a user
 @app.route("/bucketlists", methods=["GET", "POST"])
 @auth.login_required
 def bucketlist():
@@ -82,10 +85,13 @@ def bucketlist():
 			page=1	
 
 		pagination = Paginator(query,post_per_page)
+		# preven out of range requests
+		if page > str(pagination.total_pages):
+			return jsonify({'Error':'Page requested is out of Range'})
 		current_page = pagination.page(page)
 		lists = current_page.object_list
-		if lists == []:
-			return jsonify({'Error':'Bucketlist Empty'})
+
+		
 		all_lists = [List.serialize for List in lists]
 
 		next_page = None
@@ -95,10 +101,7 @@ def bucketlist():
 			next_page = current_page.next_page_number
 		if current_page.has_previous():
 			previous_page = current_page.has_previous()
-		total_pages = current_page.paginator.total_pages
-		if page > total_pages:
-			return jsonify({'Error':'requested a page thats out of range '})
-
+		total_pages = str(current_page.paginator.total_pages)
 
 		pages_view = {
                     'total_count': current_page.paginator.count,
@@ -168,7 +171,7 @@ def bucketitems(id):
 		data = request.get_json(force=True)
 		item = request.json.get('name')
 		if item is None :
-			return jsonify({'Error':'Bucketitem Name is required'})
+			return jsonify({'Error':'Bucketilist Name is required'})
 		
 		newitem = Bucketitems(item,id)
 		db.session.add(newitem)
@@ -240,17 +243,9 @@ def update_items(id, item_id):
 # index page route index.html
 
 @app.route("/")
-@auth.login_required
 def index():
-	uid = "%d"%g.user.uid
-	query = db.session.query(Bucketlist).filter_by(creator=uid)
-	pagination = Paginator(query,POSTS_PER_PAGE)
-	page=1
-	current_page = pagination.page(page)
-	bucketlists = current_page.object_list
-	#users = User.find(...)
-	#pagination = Pagination(page=page, total=count, search=count, record_name='users')
-	return jsonify(Bucketlist=[lists.serialize for lists in bucketlists])
+	
+	return jsonify({"info": "welcome Please Login "})
 
 
 # route to about page about.html
@@ -267,19 +262,13 @@ def new_user():
     password = request.json.get('password')
     if username is None or password is None:
         abort(400) # missing arguments
-    if User.query.filter_by(username = username).first() is not None:
+    if users.query.filter_by(username = username).first() is not None:
         abort(400) # existing user
-    user = User(username = username)
+    user = users(username = username)
     user.hash_password(password)
     db.session.add(user)
     db.session.commit()
-    return jsonify({ 'username': user.username }), 201,\
-    				{'Location': url_for('get_user', 
-    									  id = user.id, 
-    									  _external = True
-    									)
-    				}
-	
+    return jsonify({ 'username': user.username }), 201
 
 # Route to Login Page 
 @app.route("/auth/login", methods=["POST"])
@@ -302,9 +291,12 @@ def login():
 	# 	return "Wrong Password",400
 	
 @app.route("/auth/logout")
+@auth.login_required
 def logout():
-	g.user=""
-	return str(g.user)#jsonify({"Message":"You Been Logged Out"})
+
+	g.user.generate_auth_token(0)
+	token=0
+	return jsonify({ 'message': 'User successfully logged out' })
 
 if __name__ == "__main__" :
 	app.run(debug=True)
