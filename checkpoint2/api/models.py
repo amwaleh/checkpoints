@@ -37,7 +37,7 @@ class users(db.Model):
 	def verify_password(self, password):
 		return pwd_context.verify(password, self.pwdhash)
 	
-	def generate_auth_token(self, expiration=60):
+	def generate_auth_token(self, expiration=600):
 		s = Serializer(SECRET_KEY, expires_in=expiration)
 		return s.dumps({'uid': self.uid})
 
@@ -50,7 +50,7 @@ class users(db.Model):
 			return None
 		except BadSignature :
 			return None
-		user = Users.query.get(data['uid'])
+		user = users.query.get(data['uid'])
 		return user
 
 

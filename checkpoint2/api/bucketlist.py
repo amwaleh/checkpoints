@@ -6,8 +6,10 @@ from form import SignupForm, LoginForm, AddBucketlist
 from flask.ext.httpauth import HTTPBasicAuth
 from sqlalchemy_paginator import Paginator
 from flask.ext.sqlalchemy  import Pagination
-from config import POSTS_PER_PAGE
+from config import POSTS_PER_PAGE,MAX_PAGES
 from flask import Blueprint
+
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/flask'
@@ -15,19 +17,24 @@ app.config['SECRET_KEY'] = "development-Key"
 #app.config["JSON_SORT_KEYS"] = False
 db.init_app(app)
 auth = HTTPBasicAuth()
-mod = Blueprint('users', __name__)
-
 @auth.verify_password
 def verify_password(username_or_token, password):
+
+	if 'token' in request.headers:
+		token = request.headers['token']
+		user = users.verify_auth_token(token)
+		if user:
+			g.user = user
+			return True
     # first try to authenticate by token
-    user = users.verify_auth_token(username_or_token)
-    if not user:
+	user = users.verify_auth_token(username_or_token)
+	if not user:
         # try to authenticate with username/password
-        user = users.query.filter_by(username=username_or_token).first()
+		user = users.query.filter_by(username=username_or_token).first()
         if not user or not user.verify_password(password):
             return False
-    g.user = user
-    return True
+	g.user = user
+	return True
 
 @app.route("/api/token")
 @auth.login_required
@@ -67,13 +74,12 @@ def bucketlist():
 				post_per_page = 100
 
 		query = db.session.query(Bucketlist).filter_by(creator=uid)
-
 		if q_name:
 			query = db.session.query(Bucketlist).filter_by(creator=uid).filter_by(name=q_name)
 
-
+		page=1	
+		
 		pagination = Paginator(query,post_per_page)
-		page=1
 		current_page = pagination.page(page)
 		lists = current_page.object_list
 		if lists == []:
@@ -227,7 +233,7 @@ def update_items(id, item_id):
 		
 
 # index page route index.html
-@mod.route('/')
+
 @app.route("/")
 @auth.login_required
 def index():
@@ -271,26 +277,25 @@ def new_user():
 	
 
 # Route to Login Page 
-@app.route("/auth/login", methods=["GET","POST"])
+@app.route("/auth/login", methods=["POST"])
 def login():
-	# generate form from form.py template
-	form = LoginForm()
-	# check if form has been submited 
-	if request.method == 'POST':
-		if form.validate() == False:
-			return render_template('login.html', form=form)		
-		# check for email
-		email = form.email.data 
-		password = form.password.data
-		user = users.query.filter_by(email=email).first()
-		if user is not None and user.check_password(password):
-			return redirect(url_for("index"))
-		'''	if all Fail return to Login 
-			if pass redirect to home page '''		
-		return render_template('login.html', form=form)
-	if request.method == 'GET':
-		return render_template('login.html', form=form)
+	
+	username= request.json.get('username') 
+	password = request.json.get('password')
 
+        # try to authenticate with username/password
+	user = users.query.filter_by(username=username).first()
+	if user :
+		confirm = user.verify_password(password)
+		if confirm:
+			g.user = user
+			token = g.user.generate_auth_token()
+			return jsonify({ 'token': token.decode('ascii') })
+		return "wrong Password"
+	return "User was not found"
+	# if not user or not user.verify_password(password):
+	# 	return "Wrong Password",400
+	
 @app.route("/auth/logout")
 def logout():
 	g.user=""
