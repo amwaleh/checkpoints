@@ -10,13 +10,15 @@ from config import POSTS_PER_PAGE,MAX_PAGES
 from flask import Blueprint
 from flask.ext.login import (current_user, LoginManager, login_user,
                              logout_user, login_required)
-
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/flask'
 app.config['SECRET_KEY'] = "development-Key"
 #app.config["JSON_SORT_KEYS"] = False
 db.init_app(app)
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,6 +29,7 @@ def verify_password(username_or_token, password):
 		token = request.headers['token']
 		user = users.verify_auth_token(token)
 		if user:
+			#check login and log out here
 			g.user = user
 			return True
     # first try to authenticate by token
@@ -165,13 +168,13 @@ def Update_bucketlist(id):
 @app.route("/bucketlists/<int:id>/items", methods=["GET", "POST"])
 @auth.login_required
 def bucketitems(id):
-	print("Add Items")
+	
 	uid = "%d"%g.user.uid
 	if request.method == 'POST':
 		data = request.get_json(force=True)
 		item = request.json.get('name')
 		if item is None :
-			return jsonify({'Error':'Bucketilist Name is required'})
+			return jsonify({'Error':'Bucketilist Name is required'}),403
 		
 		newitem = Bucketitems(item,id)
 		db.session.add(newitem)
@@ -180,7 +183,7 @@ def bucketitems(id):
 		items = db.session.query(Bucketlist).filter\
 						  (Bucketlist.creator == uid)
 
-		return jsonify(Bucketlist=[item.serialize for item in items])
+		return jsonify(Bucketlist=[item.serialize for item in items]),201
 	
 	if request.method == 'GET':
 		items = db.session.query(Bucketlist).\
@@ -189,7 +192,7 @@ def bucketitems(id):
 			   		    Bucketlist.id == id
 			   		   )
 
-		return jsonify(Bucketlist=[item.serialize for item in items])
+		return jsonify(Bucketlist=[item.serialize for item in items]),200
 		
 
 @app.route("/bucketlists/<int:id>/items/<int:item_id>", methods=["GET", "PUT", 'DELETE'])
@@ -215,7 +218,7 @@ def update_items(id, item_id):
 									Bucketlist.creator == uid, 
 									Bucketlist.id == id,
 									Bucketitems.id == item_id
-									)])
+									)]),201
 
 	if request.method == 'DELETE':
 		del_item = Bucketitems.query.get(item_id)
@@ -235,40 +238,38 @@ def update_items(id, item_id):
 									Bucketlist.id == id,
 									Bucketitems.id == item_id
 									)]
-		if len(item) == 0 :
+		if len(items) == 0 :
 			return jsonify({'Error':'No Item Found'})
 		return jsonify(items=items)
 		
 
-# index page route index.html
+
 
 @app.route("/")
 def index():
-	
+	'''index page route index.html'''
 	return jsonify({"info": "welcome Please Login "})
 
-
-# route to about page about.html
 @app.route("/about")
 @auth.login_required
 def about():
+	'''route to about page about.html'''
 	return render_template("about.html")
-
-# Route to Sign up page
 
 @app.route('/api/users', methods = ['POST'])
 def new_user():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    if username is None or password is None:
-        abort(400) # missing arguments
-    if users.query.filter_by(username = username).first() is not None:
-        abort(400) # existing user
-    user = users(username = username)
-    user.hash_password(password)
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({ 'username': user.username }), 201
+	'''Route to Sign up page'''
+	username = request.json.get('username')
+	password = request.json.get('password')
+	if username is None or password is None:
+	    abort(400) # missing arguments
+	if users.query.filter_by(username = username).first() is not None:
+	    abort(400) # existing user
+	user = users(username = username)
+	user.hash_password(password)
+	db.session.add(user)
+	db.session.commit()
+	return jsonify({ 'username': user.username }), 201
 
 # Route to Login Page 
 @app.route("/auth/login", methods=["POST"])
@@ -287,8 +288,7 @@ def login():
 			return jsonify({ 'token': token.decode('ascii') })
 		return "wrong Password"
 	return "User was not found"
-	# if not user or not user.verify_password(password):
-	# 	return "Wrong Password",400
+
 	
 @app.route("/auth/logout")
 @auth.login_required

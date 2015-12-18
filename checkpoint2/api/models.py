@@ -82,6 +82,7 @@ class Bucketitems(db.Model):
 	list =db.Column(db.Integer, db.ForeignKey('bucketlist.id'))
 	name = db.Column(db.String(100))
 	done = db.Column(db.Boolean)
+	logged = db.Column(db.Boolean)
 	created_on = db.Column(db.DateTime, server_default=db.func.now())
 	modified_on = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
@@ -143,7 +144,6 @@ class Bucketlist(db.Model):
 				'created_on': self.created_on,
 				'modified_on': self.modified_on
 				}
-	
 
 	@property
 	def serialize (self):

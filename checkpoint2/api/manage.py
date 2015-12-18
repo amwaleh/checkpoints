@@ -4,8 +4,8 @@ import os
 import sys
 
 sys.path.append('.')
-from api.bucketlist import app, db
-
+from app.bucketlist import app, db
+app.config.from_object(os.environ['APP_SETTINGS'])
 
 migrate = Migrate(app, db)
 manager = Manager(app)
