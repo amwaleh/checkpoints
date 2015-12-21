@@ -1,35 +1,37 @@
 
+from config import SECRET
 from flask.ext.sqlalchemy import SQLAlchemy
 from passlib.apps import custom_app_context as pwd_context
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
-
 from werkzeug import generate_password_hash, check_password_hash
 from flask.ext.appbuilder import ModelView
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
+
+SECRET_KEY = SECRET
 db = SQLAlchemy()
-SECRET_KEY = "development-Key2"
 
-
-
-class users(db.Model):
+class Users(db.Model):
 	__tablename__ = 'users'
 	uid = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(100), unique=True)
 	firstname = db.Column(db.String(100))
 	lastname = db.Column(db.String(100))
 	email = db.Column(db.String(120))
+	logged = db.Column(db.Boolean)
 	pwdhash = db.Column(db.String(255))
 	created_on = db.Column(db.DateTime, server_default=db.func.now())
-	modified_on = db.Column(db.DateTime, server_default=db.func.now(),onupdate=db.func.now())
+	modified_on = db.Column(db.DateTime, server_default=db.func.now(),
+		                                 onupdate=db.func.now())
 
-	def __init__(self,username,firstname=None, lastname=None, email=None):
+	def __init__(self,username,firstname=None, lastname=None, email=None, logged=False):
 		self.firstname = firstname
 		self.lastname = lastname
 		self.email = email
 		self.username = username
+		self.logged = logged
 
 	def hash_password(self, password):
 		self.pwdhash = pwd_context.encrypt(password)
@@ -42,39 +44,19 @@ class users(db.Model):
 		data = {'username': self.username} if self.username is not None else {}
 		return s.dumps({'uid': self.uid})
 
-	def invalidate(self):
-		return_token = users.generate_auth_token(self)
-		return {'token':return_token.decode()}, 200
-
 	@staticmethod
 	def verify_auth_token(token):
 		s = Serializer(SECRET_KEY)
 		try:
 			data = s.loads(token)
+			user =Users.query.filter_by(uid=data['uid']).first()
 		except SignatureExpired:
 			return None
 		except BadSignature :
 			return None
-		user = users.query.get(data['uid'])
+			
+		user =Users.query.get(data['uid'])
 		return user
- 	
- 	def is_authenticated(self):
-		return True
-
-	def is_active(self):
-		return True
-
-	def is_anonymous(self):
-		return False
-        
-	def get_id(self):
-		try:
-			return unicode(self.id)  # python 2
-		except NameError:
-			return str(self.id)
-
-
-
 
 class Bucketitems(db.Model):
 	__tablename__ ='bucketitem'
@@ -82,7 +64,6 @@ class Bucketitems(db.Model):
 	list =db.Column(db.Integer, db.ForeignKey('bucketlist.id'))
 	name = db.Column(db.String(100))
 	done = db.Column(db.Boolean)
-	logged = db.Column(db.Boolean)
 	created_on = db.Column(db.DateTime, server_default=db.func.now())
 	modified_on = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
@@ -99,41 +80,44 @@ class Bucketitems(db.Model):
 
 	@property
 	def serialize(self):
-	    return {
-	    		'id': self.id,
-	    		'name': self.name,
-	    		'done': self.done,
-	    		'date_created': self.created_on,
-	    		'date_modified': self.modified_on
-	    		}
+		''' serialize output of bucketlist '''
+		return {
+				'id': self.id,
+				'name': self.name,
+				'done': self.done,
+				'date_created': self.created_on,
+				'date_modified': self.modified_on
+				}
 	@property
 	def serializeitem (self):
-		return {'name': self.name}
+		''' Serialize items from Bucketitems '''
+		return {
+				'name': self.name,
+				'done': self.done
+				}
+
 	@property
 	def serialize_many2many(self):
-	    return  [ list.serialize for list in self.list]
+		''' Serialize items in the relationship object '''
+		return  [ list.serialize for list in self.list]
 
 class Bucketlist(db.Model):
 	__tablename__ ='bucketlist'
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(100))
+	item = db.relationship('Bucketitems', backref='items', lazy='dynamic')
 	creator = db.Column(db.Integer, db.ForeignKey('users.uid'))
 	created_on = db.Column(db.DateTime, server_default=db.func.now())
 	modified_on = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
-	item = db.relationship('Bucketitems', backref='items', lazy='dynamic')
-
-	class Meta:
-		ordering = ['id','name','created_on','modified_on']
-
+	
+		
 	def __init__(self,name,creator=None,id=None,created_on=None,modified_on=None,item={}):
-
+		self.id = id 
+		self.item = item
 		self.name = name
+		self.creator = creator
 		self.created_on = created_on
 		self.modified_on = modified_on
-		self.item = item
-		self.id = id 
-		self.creator = creator
-		
 
 	# Function to serialize the data that will be retrieved 
 	@property
